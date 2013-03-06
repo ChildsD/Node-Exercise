@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script>
+
+		var server = io.connect('http://localhost:8080');
+
+		server.on('join', function(data){
+			//remember we're using an ID because it's unique - which will come in handy later when we want to remove it
+			$('.user-list').append("<div id = '" + data.toString() + "'><li>" + data.toString() + "<br></li>");
+		});
+
+		var counter = 0;
+
+		server.on('authenticate', function(data) {
+
+			if(data == null)
+			{
+				var code = prompt("Please create room key:").toString();
+				server.emit("set-key", code);
+			}
+			
+			 else if(data == false)
+			{
+				var attempt = prompt("Enter the room key: ");
+				if(attempt == null)
+				{
+					++counter;
+					if(counter >= 20)
+					{
+						window.open('', '_self', ''); 
+						window.close();
+					}
+				}
+				server.emit('authenticate', attempt);
+			}
+
+			else
+			{
+				$('#room-info').append("<p>Room Access Code: " + data.toString() + "</p>");
+				server.emit('join', prompt("Enter desired username"));
+			}
+		});
+
+		//CALLED UPON PAGE LOAD
+		$(function(){
+			//First, listen for the user pressing "enter" and click the button
+			$('#chat_input').keypress(function(e) {
+				if(e.which == 13) {
+					$(this).blur();
+					$('#send').focus().click();
+				}
+			});
+
+			//automatically place cursor in chat input on page load
+			$('#chat_input').focus();
+		});
+
+		server.on('messages', function(data) {
+			//alert(data.message);
+			$('#post-screen').append("<div class = 'post'>" + data + "<div><br>");
+			var objDiv = document.getElementById("post-screen");
+			objDiv.scrollTop = objDiv.scrollHeight;
+		});
+
+		server.on("disconnect", function(name)
+		{
+			$('#' + name).remove();
+			
+		});
+
+		function checkSubmit() {
+			var sent_message = document.getElementById("chat_input").value;
+			if(sent_message != "null" && sent_message.length > 0)
+			{
+				server.emit('messages', {data: sent_message});
+				document.getElementById("chat_input").value = "";
+				$('#chat_input').focus();
+			}
+			else
+				$('#chat_input').focus();
+		}
+	</script>
+</head>
+
+<body>
+
+	<div id = "room-info">
+	</div>
+	<div class = "chat-window">
+		
+		<div class = "user-list">
+			<!-- This is where the posts go -->
+		</div>
+
+		<div id = "post-screen">
+			<!-- This is where the posts go -->
+		</div>
+
+		<div id = "input">
+				<input type = "button" value = "Send" id="send" onClick="checkSubmit()"/>
+				<textarea rows="3" cols="25" id = "chat_input"></textarea>
+		</div>
+	</div>
+
+</body>
+<div class = "foot">
+</div>
+</html>

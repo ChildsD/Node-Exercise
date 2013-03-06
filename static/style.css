@@ -1,0 +1,108 @@
+html {
+	height: 100%;
+}
+
+body
+{
+	font-family: Arial, sans-serif;
+	height: 90%;
+	background-color: white;
+	padding: 0 25px 0 25px;
+}
+
+.chat-window {
+	margin-left: auto;
+	margin-right: auto;
+	width: auto;
+	height: 80%;
+	max-height: 80%;
+	border-color: #B2B2B2;
+	border: solid 1px;
+	box-shadow: 0px 0px 12px 0 #333;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+
+#room-info {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	height: 4em;
+}
+
+.user-list {
+	width: 15em;
+	float: left;
+	border-right: solid;
+	border-color: #000;
+	height: 100%;
+	overflow: auto;
+	display: table-cell;
+	background-color: #EEE;
+}
+
+.user-list li {
+	padding: 1em 0 0 2em;
+	list-style-type: none;
+}
+
+#post-screen {
+	height: 80%;
+	margin-left: 15em;
+	position: relative;
+	overflow: auto;
+	padding-left: 4em;
+	padding-right: 4em;
+	border-bottom: solid #000;
+}
+
+.post {
+	border: solid;
+	color: #fff;
+	vertical-align: text-top;
+	background: rgba(0, 0, 0, 0.4);
+	min-height: 3em;
+	max-height: 15em;
+	overflow: auto;
+	padding: 1.5em 2em 0 2em;
+	margin-top:2em ;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	min-width: 7em;
+	display: table;
+}
+
+
+
+#input {
+	height: 19%;
+	margin-left: 15em;
+	position: relative;
+}
+
+textarea#chat_input {
+	height: 97%;
+	width: 95%;
+	float: right;
+	position: absolute;
+	border: none;
+	resize: none;
+}
+
+input#send {
+	width: 10em;
+	height: 100%;
+	float: right;
+	bottom: 0;
+	background: #444;
+	color: #fff;
+	position: absolute;
+	right: 0px;
+	z-index: 1;
+}
+
+input#send:hover {
+	color: #444;
+	background-color: #fff;
+}
+
